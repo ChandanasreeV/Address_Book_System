@@ -1,7 +1,6 @@
 import readlineSync from "readline-sync";
 import { ContactPerson } from "../modal/ContactPerson";
 
-
 export class IOUtils 
 {
   

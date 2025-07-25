@@ -1,7 +1,4 @@
-
 // File: src/utils/ContactInputHelper.ts
-
-
 import { ContactPerson } from "../modal/ContactPerson";
 import { IOUtils } from "./IOUtils";
 import { Validator } from "./Validator";

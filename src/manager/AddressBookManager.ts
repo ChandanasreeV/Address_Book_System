@@ -2,6 +2,7 @@
 // File: src/manager/AddressBookManager.ts
 import { AddressBook } from "../modal/AddressBook";
 import { ContactPerson } from "../modal/ContactPerson";
+
 import { ContactInputHelper } from "../utils/ContactInputHelper";
 import { IOUtils } from "../utils/IOUtils";
 import { Validator } from "../utils/Validator";
@@ -99,7 +100,7 @@ export class AddressBookManager {
     let option: string;
     do {
       console.log("\n Managing Address Book");
-      console.log("1. Add Contact\n2. View Contacts\n3. Edit Contact\n4. Delete Contact\n5. Find in All Books by City\n6. Find in All Books by State\n7. Exit");
+      console.log("1. Add Contact\n2. View Contacts\n3. Edit Contact\n4. Delete Contact\n5. Find by City\n6. Find by State\n7. Find in All Books by City\n8. Find in All Books by State\n9. Exit");
       option = IOUtils.prompt("Choose an option: ");
 
       switch (option) {
@@ -124,19 +125,27 @@ export class AddressBookManager {
           addressBook.deleteContact(delName);
           break;
         case "5":
+          const city = IOUtils.prompt("Enter City to search contacts: ");
+          IOUtils.displayContactsList(`Contacts in City: ${city}`, addressBook.findByCity(city));
+          break;
+        case "6":
+          const state = IOUtils.prompt("Enter State to search contacts: ");
+          IOUtils.displayContactsList(`Contacts in State: ${state}`, addressBook.findByState(state));
+          break;
+        case "7":
           const cityAll = IOUtils.prompt("Enter City to search across all books: ");
           IOUtils.displayContactsList(`All Books - Contacts in City: ${cityAll}`, this.findInAllBooksByCity(cityAll));
           break;
-        case "6":
+        case "8":
           const stateAll = IOUtils.prompt("Enter State to search across all books: ");
           IOUtils.displayContactsList(`All Books - Contacts in State: ${stateAll}`, this.findInAllBooksByState(stateAll));
           break;
-        case "7":
+        case "9":
           IOUtils.log("Exiting address book management.");
           break;
         default:
           IOUtils.log("Invalid option. Please try again.", false);
       }
-    } while (option !== "7");
+    } while (option !== "9");
   }
 }

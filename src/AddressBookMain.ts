@@ -1,7 +1,7 @@
 
 // File: src/main/AddressBookMain.ts
 import { AddressBookManager } from "./manager/AddressBookManager";
-import { ContactPerson } from "./modal/ContactPerson";
+
 import { IOUtils } from "./utils/IOUtils";
 
 // Main class that serves as the entry point for the Address Book Program
