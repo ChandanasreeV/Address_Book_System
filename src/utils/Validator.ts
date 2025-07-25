@@ -1,66 +1,58 @@
-// File: src/utils/Validator.ts
 
-// Validator class contains static methods for validating user inputs
+
+import { IOUtils } from "./IOUtils";
+
 export class Validator {
+ 
+  static promptAndValidate(
+    message: string,
+    validatorFn: (input: string) => boolean,
+    errorMsg: string,
+    maxAttempts: number = 3
+  ): string | null {
+    let attempts = 0;
 
-  /**
-   * Validates names (First Name, Last Name, and Address Book Name).
-   * - Must start with a capital letter.
-   * - Must be at least 3 characters long.
-   * - Only letters are allowed.
-   */
-  static isNameValid(name: string): boolean {
-    return /^[A-Z][a-zA-Z]{2,}$/.test(name);
+    while (attempts < maxAttempts) {
+      const input = IOUtils.prompt(message).trim();
+
+      if (validatorFn(input)) return input;
+
+      IOUtils.log(errorMsg);
+      attempts++;
+    }
+
+    IOUtils.log(` Maximum attempts (${maxAttempts}) reached.`);
+    return null;
   }
 
-  /**
-   * Validates address.
-   * - Must be at least 3 characters.
-   * - Can include letters, numbers, spaces, and special characters: # , / . -
-   */
+  
+    static validateNameOrThrow(name: string): void {
+        if (!/^[A-Z][a-z]{2,}$/.test(name)) {
+          throw new Error(" Invalid name. It must start with a capital letter and have at least 3 lowercase letters.");
+        }
+      }
+
+  
+    static isNameValid(name: string): boolean {
+      return /^[A-Z][a-z]{2,}$/.test(name);
+    }
+
+
+ 
   static isAddressValid(address: string): boolean {
     return /^[\w\s#,\/.-]{3,}$/.test(address);
   }
 
-  /**
-   * Validates city or state name.
-   * - At least 2 characters.
-   * - Only letters are allowed.
-   */
-  static isCityOrStateValid(city: string): boolean {
-    return /^[A-Za-z]{2,}$/.test(city);
+  static isZipValid(zip: string): boolean {
+    return /^\d{6}$/.test(zip);
   }
 
-  /**
-   * Validates Indian ZIP code (PIN code).
-   * - Must be exactly 6 digits.
-   * - Cannot start with 0.
-   */
-  static isZipcodeValid(zipcode: number): boolean {
-    return /^[1-9][0-9]{5}$/.test(zipcode.toString());
-  }
-
-  /**
-   * Validates Indian phone numbers.
-   * - Must start with +91 followed by 10 digits.
-   */
   static isPhoneNumberValid(phone: string): boolean {
-    return /^\+91[0-9]\d{9}$/.test(phone);
+    return /^\+91\d{10}$/.test(phone);
+
   }
 
-  /**
-   * Validates email address.
-   * - Basic pattern check for user@domain.extension
-   */
   static isEmailValid(email: string): boolean {
     return /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(email);
-  }
-
-  /**
-   * Validates address book name.
-   * - Reuses same logic as person name.
-   */
-  static isAddressBookNameValid(name: string): boolean {
-    return /^[A-Z][a-zA-Z]{2,}$/.test(name);
   }
 }

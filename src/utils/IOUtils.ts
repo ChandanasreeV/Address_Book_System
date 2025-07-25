@@ -1,26 +1,28 @@
-// File: src/utils/IOUtils.ts
+import readlineSync from "readline-sync";
+import { ContactPerson } from "../modal/ContactPerson";
 
-// Importing readline-sync to enable synchronous user input from the command line
-import * as readline from "readline-sync";
 
-// Utility class to handle user input and formatted console logging
-export class IOUtils {
+export class IOUtils 
+{
   
-  /**
-   * Prompt the user for input using a custom message.
-   * @param message - The prompt message shown to the user.
-   * @returns The user input as a string.
-   */
   static prompt(message: string): string {
-    return readline.question(message);
+    return readlineSync.question(message);
   }
 
-  /**
-   * Logs a message to the console with a prefix icon indicating success or error.
-   * @param message - The message to display.
-   * @param success - Optional flag; if true (default), logs a success  message; if false, logs an error  message.
-   */
   static log(message: string, success: boolean = true): void {
     console.log(success ? ` ${message}` : ` ${message}`);
   }
+
+  static displayContactsList(header: string, contacts: ContactPerson[]): void {
+    if (contacts.length === 0) {
+      this.log(` No contacts available for ${header}`, false);
+      return;
+    }
+
+    this.log(`\n ${header}`);
+    contacts.forEach((contact, index) => {
+      console.log(`  ${index + 1}. ${contact.toString()}`);
+    });
+  }
+  
 }
