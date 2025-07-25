@@ -1,32 +1,68 @@
+import * as readline from "readline-sync";
+import { AddressBook } from "./modal/AddressBook";
+import { Contact } from "./modal/ContactPerson";
 
-import { AddressBook } from './modal/AddressBook';
-import { ContactPerson } from './modal/ContactPerson';
-class AddressBookMain
-{
-    welcomeToAddressBook():void
-   {
-     console.log(" Welcome to the Address Book Program");
-   }
 
-   private addressBook = new AddressBook()
-   run():void
-   {
-    this.welcomeToAddressBook()
-     const contact1 = new ContactPerson(
-      "Chandana",
-      "sree",
-      "korlagunta Main Road",
-      "Tirupati",
-      "AP",
-      517418,
-      9876543210,
-      "chandana@gmail.com"
-    );
-    this.addressBook.addAccount(contact1)
-    this.addressBook.getAllContacts()
-    
-   }
-   
+class AddressBookApp {
+  private addressBook = new AddressBook();
+
+  private showMenu(): void {
+    console.log("\n==== Address Book ====");
+    console.log("1. Add Contact");
+    console.log("2. View Contacts");
+    console.log("3. Exit");
+  }
+
+  private getContactDetails(): Omit<Contact, 'id'> {
+    console.log("\nEnter Contact Details:");
+    return {
+      firstName: readline.question("First Name: "),
+      lastName: readline.question("Last Name: "),
+      address: readline.question("Address: "),
+      city: readline.question("City: "),
+      state: readline.question("State: "),
+      zip: readline.question("Zip Code (6 digits): "),
+      phone: readline.question("Phone: "),
+      email: readline.question("Email: ")
+    };
+  }
+
+  run(): void {
+    console.log("Welcome to Address Book System");
+
+    while (true) {
+      this.showMenu();
+      const choice = readline.question("Choose option (1-3): ");
+
+      switch (choice) {
+        case "1":
+          try {
+            const contact = this.addressBook.addContact(this.getContactDetails());
+            console.log("\n Contact added successfully!");
+            console.log(contact.toString());
+          } catch (error) {
+            if (error instanceof Error) {
+              console.error("\n Error:", error.message);
+            } else {
+              console.error("\n An unknown error occurred");
+            }
+          }
+          break;
+
+        case "2":
+          this.addressBook.displayContacts();
+          break;
+
+        case "3":
+          console.log(" Goodbye!");
+          return;
+
+        default:
+          console.log(" Invalid choice. Please try again.");
+      }
+    }
+  }
 }
-const addressApp =new AddressBookMain()
-addressApp.run()
+
+// Start the application
+new AddressBookApp().run();
