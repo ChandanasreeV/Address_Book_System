@@ -6,16 +6,16 @@ export class AddressBook {
 
   addContact(contact: ContactPerson): void {
     this.contacts.push(contact);
-    console.log("✅ Contact added successfully.");
+    console.log(" Contact added successfully.");
   }
 
   getAllContacts(): void {
     if (this.contacts.length === 0) {
-      console.log("📭 No contacts available.");
+      console.log(" No contacts available.");
       return;
     }
 
-    console.log("📇 Contact List:");
+    console.log(" Contact List:");
     this.contacts.forEach((contact, i) =>
       console.log(`${i + 1}. ${contact.toString()}`)
     );
@@ -25,13 +25,13 @@ export class AddressBook {
     const contact = this.contacts.find(c => c.firstName === firstName);
 
     if (!contact) {
-      console.log("❌ Contact not found.");
+      console.log(" Contact not found.");
       return false;
     }
 
     const confirm = this.prompt("Do you want to edit this contact? (yes/no): ").toLowerCase();
     if (confirm !== "yes") {
-      console.log("✋ Edit cancelled.");
+      console.log(" Edit cancelled.");
       return false;
     }
  
@@ -59,10 +59,10 @@ export class AddressBook {
       contact.phoneNumber = phoneNumber;
       contact.email = email;
 
-      console.log("✅ Contact updated successfully.");
+      console.log("Contact updated successfully.");
       return true;
     } catch (error: any) {
-      console.error("❌ Error updating contact:", error.message);
+      console.error("Error updating contact:", error.message);
       return false;
     }
   }
@@ -72,13 +72,13 @@ export class AddressBook {
       const input = readline.question(promptText).trim();
 
       if (!input) {
-        console.log("❌ Input cannot be empty. Please try again.");
+        console.log("Input cannot be empty. Please try again.");
         continue;
       }
 
       if (isNumber) {
         if (!/^\d+$/.test(input)) {
-          console.log("❌ Invalid number. Please enter digits only.");
+          console.log("Invalid number. Please enter digits only.");
           continue;
         }
       }
