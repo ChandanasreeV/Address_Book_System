@@ -10,7 +10,7 @@ class AddressBookMain {
   welcomeToAddressBook(): void {
     console.log(" Welcome to the Address Book Program");
   }
-  // DRY Helper method for prompting input with optional validation
+  //  DRY Helper method for prompting input with optional validation
   private promptInput(message: string, validator?: (input: string) => boolean): string {
     while (true) {
       const input = readline.question(message).trim();
@@ -59,6 +59,8 @@ class AddressBookMain {
     const nameToEdit = this.promptInput("Enter first name to edit: ");
     this.addressBook.editContact(nameToEdit);              //  Edit contact
     this.addressBook.getAllContacts();                     //  Show all after editing
+    const nameToDelete=this.promptInput("Enter name to delete")
+    this.addressBook.deleteContact(nameToDelete);
   }
 }
 
