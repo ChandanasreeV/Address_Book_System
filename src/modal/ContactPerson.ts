@@ -1,3 +1,7 @@
+// File: src/model/ContactPerson.ts
+import { Validator } from "../utils/Validator";
+import { IOUtils } from "../utils/IOUtils";
+
 export class ContactPerson {
   constructor(
     public firstName: string,
@@ -9,33 +13,45 @@ export class ContactPerson {
     public phoneNumber: string,
     public email: string
   ) {
-    this.validateZipcode(zipcode);
-    this.validatePhoneNumber(phoneNumber);
-    this.validateEmail(email);
+    this.zipcode = this.getValidZipcode(zipcode);
+    this.phoneNumber = this.getValidPhoneNumber(phoneNumber);
+    this.email = this.getValidEmail(email);
   }
 
-  validateZipcode(zipcode: number): void {
-    const zipRegex = /^[1-9][0-9]{5}$/;
-    if (!zipRegex.test(zipcode.toString())) {
-      throw new Error("Invalid Zipcode! It should be a 6-digit number not starting with 0.");
+  private getValidZipcode(zip: number): number {
+    while (!Validator.isZipcodeValid(zip)) {
+      IOUtils.log("Invalid Zipcode! It should be a 6-digit number not starting with 0.", false);
+      zip = parseInt(IOUtils.prompt("Enter valid Zipcode: "));
     }
+    return zip;
   }
 
-  validatePhoneNumber(phone: string): void {
-    const phoneRegex = /^\+91[6-9]\d{9}$/;
-    if (!phoneRegex.test(phone)) {
-      throw new Error("Invalid Phone Number! It must start with +91 and be followed by a valid 10-digit Indian number.");
+  private getValidPhoneNumber(phone: string): string {
+    while (!Validator.isPhoneNumberValid(phone)) {
+      IOUtils.log("Invalid Phone Number! Format: +91XXXXXXXXXX", false);
+      phone = IOUtils.prompt("Enter valid Phone Number: ");
     }
+    return phone;
   }
 
-  validateEmail(email: string): void {
-    const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      throw new Error("Invalid Email Format!");
+  private getValidEmail(email: string): string {
+    while (!Validator.isEmailValid(email)) {
+      IOUtils.log("Invalid Email Format!", false);
+      email = IOUtils.prompt("Enter valid Email: ");
     }
+    return email;
+  }
+
+  updateDetails(): void {
+    this.address = IOUtils.prompt("Enter new Address: ");
+    this.city = IOUtils.prompt("Enter new City: ");
+    this.state = IOUtils.prompt("Enter new State: ");
+    this.zipcode = this.getValidZipcode(parseInt(IOUtils.prompt("Enter new Zipcode: ")));
+    this.phoneNumber = this.getValidPhoneNumber(IOUtils.prompt("Enter new Phone Number: "));
+    this.email = this.getValidEmail(IOUtils.prompt("Enter new Email: "));
   }
 
   toString(): string {
-    return `${this.firstName} ${this.lastName}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
+    return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
   }
 }
