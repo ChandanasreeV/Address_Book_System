@@ -15,7 +15,7 @@ export class IOUtils {
 
   static displayContactsList(header: string, contacts: ContactPerson[]): void {
     if (contacts.length === 0) {
-      this.log(` No contacts available for ${header}`, false);
+      this.log(`No contacts available for ${header}`, false);
       return;
     }
 

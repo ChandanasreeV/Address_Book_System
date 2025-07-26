@@ -21,14 +21,14 @@ export class Validator {
       attempts++;
     }
 
-    IOUtils.log(` Maximum attempts (${maxAttempts}) reached.`);
+    IOUtils.log(`Maximum attempts (${maxAttempts}) reached.`);
     return null;
   }
 
   
     static validateNameOrThrow(name: string): void {
         if (!/^[A-Z][a-z]{2,}$/.test(name)) {
-          throw new Error(" Invalid name. It must start with a capital letter and have at least 3 lowercase letters.");
+          throw new Error("Invalid name. It must start with a capital letter and have at least 3 lowercase letters.");
         }
       }
 

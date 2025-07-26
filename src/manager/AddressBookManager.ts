@@ -1,9 +1,7 @@
 // File: src/manager/AddressBookManager.ts
 
-
 import { AddressBook } from "../modal/AddressBook";
 import { ContactPerson } from "../modal/ContactPerson";
-
 import { ContactInputHelper } from "../utils/ContactInputHelper";
 import { IOUtils } from "../utils/IOUtils";
 import { Validator } from "../utils/Validator";
@@ -113,7 +111,7 @@ export class AddressBookManager {
 
     let option: string;
     do {
-      console.log("\n Managing Address Book");
+      console.log("\n📘 Managing Address Book");
       IOUtils.log(" Add Contact");
       IOUtils.log(" View All Contacts");
       IOUtils.log(" Edit Contact");
@@ -122,7 +120,7 @@ export class AddressBookManager {
       IOUtils.log(" View Contacts by State");
       IOUtils.log(" Count Contacts by City");
       IOUtils.log(" Count Contacts by State");
-      IOUtils.log(" Sort Contacts by Name");
+      IOUtils.log(" Sort Contacts by Name/City/State/Zip");
       IOUtils.log(" Back to Main Menu");
 
       option = IOUtils.prompt("Enter your choice: ");
@@ -170,7 +168,7 @@ export class AddressBookManager {
           const cityCounts = this.countBy("city");
           IOUtils.log(" Contact Count by City:");
           cityCounts.forEach((count, city) => {
-            IOUtils.log(` ${city}: ${count} contact(s)`);
+            IOUtils.log(`  ${city}: ${count} contact(s)`);
           });
           break;
 
@@ -182,12 +180,28 @@ export class AddressBookManager {
           });
           break;
 
+
         case "9":
-          const sortedContacts = this.sortAllContactsByName();
+          const fieldInput = IOUtils.prompt(
+            "Enter field to sort by (city/state/zip/name): "
+          ).toLowerCase();
+
+          if (
+            fieldInput === "city" ||
+            fieldInput === "state" ||
+            fieldInput === "zip"||fieldInput==="name"
+          ) {
+            this.sortAllContacts(fieldInput as "city" | "state" | "zip"|"name");
+          } else {
+            IOUtils.log(
+              " Invalid input. Please enter 'city', 'state','zip', or 'name",
+              false
+            );
+          }
           break;
 
         case "10":
-          IOUtils.log(" Back to Main Menu.");
+          IOUtils.log("🔙 Back to Main Menu.");
           break;
         default:
           IOUtils.log("Invalid option. Please try again.", false);
@@ -208,7 +222,8 @@ export class AddressBookManager {
       IOUtils.displayContactsList(`\n ${label}: ${groupKey}`, contacts);
     });
   }
-  sortAllContactsByName(): void {
+ 
+  sortAllContacts(field: "city" | "state" | "zip"|"name"): void {
     const allContacts: ContactPerson[] = [];
 
     this.addressBooks.forEach((book, bookName) => {
@@ -224,13 +239,12 @@ export class AddressBookManager {
       return;
     }
 
-    const sortedContacts = allContacts.sort((a, b) =>
-      a.getFullName().localeCompare(b.getFullName())
-    );
+    allContacts.sort((a, b) => {
+    if (field === "zip") return a.zip - b.zip;
+    if (field === "name") return a.getFullName().localeCompare(b.getFullName());
+    return a[field].localeCompare(b[field]);
+  });
 
-    IOUtils.displayContactsList(
-      " All Contacts Sorted by Name",
-      sortedContacts
-    );
+    IOUtils.displayContactsList(` Sorted Contacts by ${field}`,allContacts);
   }
 }
