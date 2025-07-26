@@ -1,6 +1,9 @@
 // File: src/manager/AddressBookManager.ts
+
+
 import { AddressBook } from "../modal/AddressBook";
 import { ContactPerson } from "../modal/ContactPerson";
+
 import { ContactInputHelper } from "../utils/ContactInputHelper";
 import { IOUtils } from "../utils/IOUtils";
 import { Validator } from "../utils/Validator";
@@ -119,6 +122,7 @@ export class AddressBookManager {
       IOUtils.log(" View Contacts by State");
       IOUtils.log(" Count Contacts by City");
       IOUtils.log(" Count Contacts by State");
+      IOUtils.log(" Sort Contacts by Name");
       IOUtils.log(" Back to Main Menu");
 
       option = IOUtils.prompt("Enter your choice: ");
@@ -174,17 +178,21 @@ export class AddressBookManager {
           const stateCounts = this.countBy("state");
           IOUtils.log(" Contact Count by State:");
           stateCounts.forEach((count, state) => {
-            IOUtils.log(`${state}: ${count} contact(s)`);
+            IOUtils.log(` ${state}: ${count} contact(s)`);
           });
           break;
 
         case "9":
-          IOUtils.log("Back to Main Menu.");
+          const sortedContacts = this.sortAllContactsByName();
+          break;
+
+        case "10":
+          IOUtils.log(" Back to Main Menu.");
           break;
         default:
           IOUtils.log("Invalid option. Please try again.", false);
       }
-    } while (option !== "9");
+    } while (option !== "10");
   }
 
   private displayGroupedContacts(
@@ -199,5 +207,30 @@ export class AddressBookManager {
     groupMap.forEach((contacts, groupKey) => {
       IOUtils.displayContactsList(`\n ${label}: ${groupKey}`, contacts);
     });
+  }
+  sortAllContactsByName(): void {
+    const allContacts: ContactPerson[] = [];
+
+    this.addressBooks.forEach((book, bookName) => {
+      const contacts = book.getAllContacts();
+      contacts.forEach((c) => {
+        (c as any)._bookName = bookName;
+        allContacts.push(c);
+      });
+    });
+
+    if (allContacts.length === 0) {
+      IOUtils.log(" No contacts available across all Address Books.", false);
+      return;
+    }
+
+    const sortedContacts = allContacts.sort((a, b) =>
+      a.getFullName().localeCompare(b.getFullName())
+    );
+
+    IOUtils.displayContactsList(
+      " All Contacts Sorted by Name",
+      sortedContacts
+    );
   }
 }

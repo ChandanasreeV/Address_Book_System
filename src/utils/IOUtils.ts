@@ -21,7 +21,7 @@ export class IOUtils {
 
     console.log(` ${header} (${contacts.length} contact${contacts.length > 1 ? "s" : ""}):`);
     contacts.forEach((contact, index) => {
-      console.log(`  ${index + 1}. 👤 ${contact.getFullName()}`);
+      console.log(`  ${index + 1}.  ${contact.getFullName()}`);
     });
   }
 }

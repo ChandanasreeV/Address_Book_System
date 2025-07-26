@@ -12,6 +12,9 @@ export class ContactPerson {
     public email: string
   ) {}
 
+  getFirstName():string{
+    return`${this.firstName}`
+  }
   getFullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }
