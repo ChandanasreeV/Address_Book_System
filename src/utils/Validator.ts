@@ -21,7 +21,7 @@ export class Validator {
       attempts++;
     }
 
-    IOUtils.log(`Maximum attempts (${maxAttempts}) reached.`);
+    IOUtils.log(` Maximum attempts (${maxAttempts}) reached.`);
     return null;
   }
 

@@ -1,7 +1,6 @@
 
 // File: src/main/AddressBookMain.ts
 import { AddressBookManager } from "./manager/AddressBookManager";
-
 import { IOUtils } from "./utils/IOUtils";
 
 // Main class that serves as the entry point for the Address Book Program
@@ -28,7 +27,7 @@ class AddressBookMain {
 
       // Prompt user to enter their choice and convert input to number
       const choice = parseInt(
-        this.addressBookManager.prompt("Enter your choice: ")
+        this.addressBookManager.prompt(`Enter your choice: `)
       );
 
       // Perform action based on user's choice

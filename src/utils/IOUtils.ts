@@ -1,15 +1,16 @@
+// File: src/utils/IOUtils.ts
+
 import readlineSync from "readline-sync";
 import { ContactPerson } from "../modal/ContactPerson";
 
-export class IOUtils 
-{
-  
+
+export class IOUtils {
   static prompt(message: string): string {
-    return readlineSync.question(message);
+    return readlineSync.question(` ${message}`);
   }
 
   static log(message: string, success: boolean = true): void {
-    console.log(success ? ` ${message}` : ` ${message}`);
+    console.log(` ${message}`);
   }
 
   static displayContactsList(header: string, contacts: ContactPerson[]): void {
@@ -18,10 +19,9 @@ export class IOUtils
       return;
     }
 
-    this.log(`\n ${header}`);
+    console.log(` ${header} (${contacts.length} contact${contacts.length > 1 ? "s" : ""}):`);
     contacts.forEach((contact, index) => {
-      console.log(`  ${index + 1}. ${contact.toString()}`);
+      console.log(`  ${index + 1}. 👤 ${contact.getFullName()}`);
     });
   }
-  
 }
